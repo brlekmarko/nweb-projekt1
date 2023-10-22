@@ -4,4 +4,5 @@ export default interface Natjecanje {
     bodoviPobjeda: number;
     bodoviPoraz: number;
     bodoviNerjeseno: number;
+    kreator: string;
 }

@@ -6,7 +6,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import "./createTournamentPopup.css";
-import { getAllTournaments } from "../../dbCalls";
+import { createTournament } from "../../dbCalls";
 
 export default function PopupCreateTournament(props: any) {
     const navigate = useNavigate();
@@ -17,11 +17,12 @@ export default function PopupCreateTournament(props: any) {
         bodoviPobjeda: 0,
         bodoviPoraz: 0,
         bodoviNerjeseno: 0,
+        kreator: "",
     });
 
     async function stvoriNatjecanje(natjecanje: Natjecanje) {
         console.log(natjecanje);
-        const res = await getAllTournaments();
+        const res = await createTournament(natjecanje);
         console.log(res.data);
         //navigate("/natjecanje/" + natjecanje.naziv, { state: natjecanje });
     }
@@ -65,6 +66,7 @@ export default function PopupCreateTournament(props: any) {
             bodoviPobjeda: 0,
             bodoviPoraz: 0,
             bodoviNerjeseno: 0,
+            kreator: "",
         });
         setError("");
         props.setTrigger(false);
