@@ -6,6 +6,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import "./createTournamentPopup.css";
+import { getAllTournaments } from "../../dbQueries";
+//import { getAllTournaments } from "../../dbQueries";
 
 export default function PopupCreateTournament(props: any) {
     const navigate = useNavigate();
@@ -20,6 +22,7 @@ export default function PopupCreateTournament(props: any) {
 
     function stvoriNatjecanje(natjecanje: Natjecanje) {
         console.log(natjecanje);
+        getAllTournaments();
         //navigate("/natjecanje/" + natjecanje.naziv, { state: natjecanje });
     }
 
@@ -48,10 +51,10 @@ export default function PopupCreateTournament(props: any) {
         }));
     }
 
-    function handleChangeBodovi(e: any) {
+    function handleChangeBodovi(bodovi: number | null, name: string) {
         setNatjecanje((prev) => ({
             ...prev,
-            [e.name]: e.value,
+            [name]: bodovi,
         }));
     }
 
@@ -73,17 +76,22 @@ export default function PopupCreateTournament(props: any) {
                 {error && <h1 className="errorMsg">{error}</h1>}
                 <h2>Stvorite novo natjecanje</h2>
                 <div className="natjecanjeForma">
+                    <label>Naziv natjecanja</label>
                     <InputText value={natjecanje.naziv} onChange={handleChange} name="naziv" placeholder="Naziv natjecanja" />
                     <br />
+                    <label>Natjecatelji</label>
                     <InputTextarea rows={5} value={natjecanje.natjecatelji.join("\n")} onChange={handleChange} name="natjecatelji" placeholder="Natjecatelji u obliku:
 Natjecatelj Prvi 
 Natjecatelj Drugi" />
                     <br />
-                    <InputNumber value={natjecanje.bodoviPobjeda} onChange={handleChangeBodovi} name="bodoviPobjeda" placeholder="Bodovi za pobjedu" />
+                    <label>Bodovi za pobjedu</label>
+                    <InputNumber value={natjecanje.bodoviPobjeda} onChange={(e) => handleChangeBodovi(e.value, "bodoviPobjeda")} name="bodoviPobjeda" placeholder="Bodovi za pobjedu" />
                     <br />
-                    <InputNumber value={natjecanje.bodoviPoraz} onChange={handleChangeBodovi} name="bodoviPoraz" placeholder="Bodovi za poraz" />
+                    <label>Bodovi za poraz</label>
+                    <InputNumber value={natjecanje.bodoviPoraz} onChange={(e) => handleChangeBodovi(e.value, "bodoviPoraz")} placeholder="Bodovi za poraz" />
                     <br />
-                    <InputNumber value={natjecanje.bodoviNerjeseno} onChange={handleChangeBodovi} name="bodoviNerjeseno" placeholder="Bodovi za nerješeno" />
+                    <label>Bodovi za nerješeno</label>
+                    <InputNumber value={natjecanje.bodoviNerjeseno} onChange={(e) => handleChangeBodovi(e.value, "bodoviNerjeseno")} placeholder="Bodovi za nerješeno" />
                     <br />
 
                 </div>
