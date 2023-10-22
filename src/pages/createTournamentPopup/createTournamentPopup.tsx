@@ -6,8 +6,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import "./createTournamentPopup.css";
-import { getAllTournaments } from "../../dbQueries";
-//import { getAllTournaments } from "../../dbQueries";
+import { getAllTournaments } from "../../dbCalls";
 
 export default function PopupCreateTournament(props: any) {
     const navigate = useNavigate();
@@ -20,16 +19,17 @@ export default function PopupCreateTournament(props: any) {
         bodoviNerjeseno: 0,
     });
 
-    function stvoriNatjecanje(natjecanje: Natjecanje) {
+    async function stvoriNatjecanje(natjecanje: Natjecanje) {
         console.log(natjecanje);
-        getAllTournaments();
+        const res = await getAllTournaments();
+        console.log(res.data);
         //navigate("/natjecanje/" + natjecanje.naziv, { state: natjecanje });
     }
 
     async function handleClick() {
         setError("");
         try {
-            stvoriNatjecanje(natjecanje);
+            await stvoriNatjecanje(natjecanje);
             closePopup();
         } catch {
             setError("Greška pri stvaranju natjecanja.");

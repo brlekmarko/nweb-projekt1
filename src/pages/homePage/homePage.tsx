@@ -11,7 +11,6 @@ const HomePage = () => {
         setPopupCreate(true);
     }
 
-
     return (
         <div className="home-page-center">
             <PopupCreateTournament
