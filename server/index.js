@@ -7,19 +7,14 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const { auth } = require('express-openid-connect');
 const { requiresAuth } = require('express-openid-connect');
+const auth0config = require('./auth0/config');
+
 
 // auth0
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: '7df2430d3a50b9b665965ad695c132afa21f596e10c41bfb41123893eed81e57',
-  baseURL: 'http://localhost:5000',
-  clientID: 'axfl9uTHuDYuRRq4Ybsq9eMJdyaVu9fT',
-  issuerBaseURL: 'https://dev-xx65jdaslr4dkmli.us.auth0.com'
-};
+
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
+app.use(auth(auth0config));
 
 // req.isAuthenticated is provided from the auth router
 // app.get('/', (req, res) => {
