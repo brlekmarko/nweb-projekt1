@@ -20,18 +20,41 @@ export default function PopupCreateTournament(props: any) {
         kreator: "",
     });
 
+    function validateNatjecanje(natjecanje: Natjecanje) {
+        // all fields have to be filled
+        if (natjecanje.naziv === "") return "Naziv natjecanja nije ispunjen.";
+        if (natjecanje.natjecatelji.length === 0) return "Natjecatelji nisu ispunjeni.";
+        if (natjecanje.bodoviPobjeda === null) return "Bodovi za pobjedu nisu ispunjeni.";
+        if (natjecanje.bodoviPoraz === null) return "Bodovi za poraz nisu ispunjeni.";
+        if (natjecanje.bodoviNerjeseno === null) return "Bodovi za nerješeno nisu ispunjeni.";
+        // number of players has to be 4-8
+        if (natjecanje.natjecatelji.length < 4 || natjecanje.natjecatelji.length > 8) return "Broj natjecatelja mora biti između 4 i 8.";
+        return "";
+    }
+
     async function stvoriNatjecanje(natjecanje: Natjecanje) {
-        console.log(natjecanje);
+        const validation = validateNatjecanje(natjecanje);
+        if (validation !== "") {
+            setError(validation);
+            return false;
+        }
+
         const res = await createTournament(natjecanje);
-        console.log(res.data);
-        //navigate("/natjecanje/" + natjecanje.naziv, { state: natjecanje });
+        const newId = res.data.id;
+        
+        if (newId == -1){
+            setError("Greška pri stvaranju natjecanja.");
+            return false;
+        }
+        navigate("/natjecanje/" + newId);
+        return true;
     }
 
     async function handleClick() {
         setError("");
         try {
-            await stvoriNatjecanje(natjecanje);
-            closePopup();
+            const success = await stvoriNatjecanje(natjecanje);
+            if (success) closePopup();
         } catch {
             setError("Greška pri stvaranju natjecanja.");
         }

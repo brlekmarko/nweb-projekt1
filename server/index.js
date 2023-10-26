@@ -19,11 +19,40 @@ app.get("/api/allTournaments", async (req, res) => {
 });
 
 app.post("/api/createTournament", jsonParser, async (req, res) => {
-  const tournament = req.body;
-  const dbres = await client.query(queries.newTournamentPart1(tournament));
-  const id = dbres.rows[0].idnatjecanje;
-  await client.query(queries.newTournamentPart2(id, tournament));
-  res.json({ id: id });
+  client.query("BEGIN");
+  try{
+    const tournament = req.body;
+    if (tournament.natjecatelji.length < 4 || tournament.natjecatelji.length > 8) {
+      res.json({ id: -1 });
+      return;
+    }
+    
+    const dbres = await client.query(queries.newTournamentCreateNatjecanje(tournament));
+    const id = dbres.rows[0].idnatjecanje;
+
+    const natjecateljires = await client.query(queries.newTournamentCreateNatjecatelji(id, tournament));
+    const natjecatelji = natjecateljires.rows;
+    let natjecateljiIds = [];
+    for(let i = 0; i < natjecatelji.length; i++){
+        natjecateljiIds.push(natjecatelji[i].idnatjecatelj);
+    }
+
+    const idkolares = await client.query(queries.newTournamentCreateKola(id, tournament, natjecateljiIds));
+    const idkola = idkolares.rows;
+    let idkolaIds = [];
+    for(let i = 0; i < idkola.length; i++){
+        idkolaIds.push(idkola[i].idigra);
+    }
+
+    res.json({ id: id
+    });
+    client.query("COMMIT");
+  }catch(e){
+    client.query("ROLLBACK");
+    console.log(e);
+    res.json({ id: -1 });
+  }
+
 });
 
 app.use(express.static(path.join(__dirname, "..", "build")));
