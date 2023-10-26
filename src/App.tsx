@@ -3,6 +3,7 @@ import './App.css';
 import { Route, Routes } from "react-router-dom";
 import HomePage from './pages/homePage/homePage';
 import NotFoundPage from './pages/notFoundPage/notFoundPage';
+import TournamentPage from './pages/tournamentPage/tournamentPage';
 
 function App() {
   return (
@@ -11,6 +12,10 @@ function App() {
         <Route
           path={"/"}
           element={<HomePage/>}
+        />
+        <Route
+            path={"/natjecanje/:id"}
+            element={<TournamentPage/>}
         />
         <Route
             path="*"

@@ -1,12 +1,16 @@
 import axios from "axios";
-import Natjecanje from "./interfaces/natjecanje";
+import { NatjecanjeForma } from "./interfaces/natjecanje";
 
-const BASE_URL = "api";
+const BASE_URL = "/api";
 
 export function getAllTournaments() {
     return axios.get(`${BASE_URL}/allTournaments`);
 }
 
-export function createTournament(tournament: Natjecanje) {
+export function createTournament(tournament: NatjecanjeForma) {
     return axios.post(`${BASE_URL}/createTournament`, tournament);
+}
+
+export function fetchTournament(id: number) {
+    return axios.get(`${BASE_URL}/fetchTournament/${id}`);
 }

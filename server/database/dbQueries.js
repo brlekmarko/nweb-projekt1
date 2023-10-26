@@ -1,5 +1,20 @@
 function getAllTournaments(){
-    return "SELECT * FROM natjecanje"
+    return "SELECT idnatjecanje, kreator, naziv, bodovipobjeda, bodoviporaz, bodovinerjeseno FROM natjecanje"
+}
+
+function getTournament(id){
+    return "SELECT idnatjecanje, kreator, naziv, bodovipobjeda, bodoviporaz, bodovinerjeseno FROM natjecanje WHERE idnatjecanje = " + id;
+}
+
+function getTournamentNatjecatelji(id){
+    return "SELECT idnatjecatelj, idnatjecanje, ime, bodovi FROM natjecatelj WHERE idNatjecanje = " + id;
+}
+
+function getTournamentKola(id){
+    return "SELECT igra.idigra, igra.idnatjecatelj, igra.igracdvaidnatjecatelj, igra.pobjednik " +
+    "FROM natjecatelj RIGHT JOIN igra " +
+    "ON igra.idnatjecatelj = natjecatelj.idnatjecatelj " +
+    "WHERE natjecatelj.idnatjecanje = " + id;
 }
 
 function newTournamentCreateNatjecanje(tournament){
@@ -54,5 +69,8 @@ module.exports = {
     getAllTournaments,
     newTournamentCreateNatjecanje,
     newTournamentCreateNatjecatelji,
-    newTournamentCreateKola
+    newTournamentCreateKola,
+    getTournament,
+    getTournamentNatjecatelji,
+    getTournamentKola
 }

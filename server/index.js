@@ -18,6 +18,20 @@ app.get("/api/allTournaments", async (req, res) => {
   res.json(dbres.rows);
 });
 
+app.get("/api/fetchTournament/:id", async (req, res) => {
+  // need to first get tournament info, then get natjecatelji, then get kola
+  const id = req.params.id;
+  try{
+    const dbres = await client.query(queries.getTournament(id));
+    const tournament = dbres.rows[0];
+    const natjecatelji = await client.query(queries.getTournamentNatjecatelji(id));
+    const kola = await client.query(queries.getTournamentKola(id));
+    res.json({ tournament: tournament, natjecatelji: natjecatelji.rows, igre: kola.rows });
+  }catch(e){
+    res.json({ tournament: {}, natjecatelji: [], igre: [] });
+  }
+});
+
 app.post("/api/createTournament", jsonParser, async (req, res) => {
   client.query("BEGIN");
   try{
@@ -26,7 +40,7 @@ app.post("/api/createTournament", jsonParser, async (req, res) => {
       res.json({ id: -1 });
       return;
     }
-    
+
     const dbres = await client.query(queries.newTournamentCreateNatjecanje(tournament));
     const id = dbres.rows[0].idnatjecanje;
 

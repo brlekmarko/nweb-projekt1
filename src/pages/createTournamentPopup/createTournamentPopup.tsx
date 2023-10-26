@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Natjecanje from "../../interfaces/natjecanje";
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import "./createTournamentPopup.css";
 import { createTournament } from "../../dbCalls";
+import { NatjecanjeForma } from "../../interfaces/natjecanje";
 
 export default function PopupCreateTournament(props: any) {
     const navigate = useNavigate();
     const [error, setError] = useState("");
-    const [natjecanje, setNatjecanje] = useState<Natjecanje>({
+    const [natjecanje, setNatjecanje] = useState<NatjecanjeForma>({
         naziv: "",
         natjecatelji: [],
         bodoviPobjeda: 0,
@@ -20,7 +20,7 @@ export default function PopupCreateTournament(props: any) {
         kreator: "",
     });
 
-    function validateNatjecanje(natjecanje: Natjecanje) {
+    function validateNatjecanje(natjecanje: NatjecanjeForma) {
         // all fields have to be filled
         if (natjecanje.naziv === "") return "Naziv natjecanja nije ispunjen.";
         if (natjecanje.natjecatelji.length === 0) return "Natjecatelji nisu ispunjeni.";
@@ -32,7 +32,7 @@ export default function PopupCreateTournament(props: any) {
         return "";
     }
 
-    async function stvoriNatjecanje(natjecanje: Natjecanje) {
+    async function stvoriNatjecanje(natjecanje: NatjecanjeForma) {
         const validation = validateNatjecanje(natjecanje);
         if (validation !== "") {
             setError(validation);
