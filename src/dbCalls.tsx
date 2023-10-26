@@ -14,3 +14,7 @@ export function createTournament(tournament: NatjecanjeForma) {
 export function fetchTournament(id: number) {
     return axios.get(`${BASE_URL}/fetchTournament/${id}`);
 }
+
+export function getUser() {
+    return axios.get(`${BASE_URL}/user`);
+}

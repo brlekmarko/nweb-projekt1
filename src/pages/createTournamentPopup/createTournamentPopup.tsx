@@ -27,6 +27,7 @@ export default function PopupCreateTournament(props: any) {
         if (natjecanje.bodoviPobjeda === null) return "Bodovi za pobjedu nisu ispunjeni.";
         if (natjecanje.bodoviPoraz === null) return "Bodovi za poraz nisu ispunjeni.";
         if (natjecanje.bodoviNerjeseno === null) return "Bodovi za nerješeno nisu ispunjeni.";
+        if(!props.user) return "Niste ulogirani.";
         // number of players has to be 4-8
         if (natjecanje.natjecatelji.length < 4 || natjecanje.natjecatelji.length > 8) return "Broj natjecatelja mora biti između 4 i 8.";
         return "";
@@ -39,6 +40,7 @@ export default function PopupCreateTournament(props: any) {
             return false;
         }
 
+        natjecanje.kreator = props.user.sub;
         const res = await createTournament(natjecanje);
         const newId = res.data.id;
         
@@ -95,7 +97,7 @@ export default function PopupCreateTournament(props: any) {
         props.setTrigger(false);
     }
 
-    return props.trigger ? (
+    return (props.trigger && props.user)? (
         <div className="popup">
             <div className="popup-inner">
                 {error && <h1 className="errorMsg">{error}</h1>}

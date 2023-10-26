@@ -5,6 +5,26 @@ const { client } = require("./database/client");
 const queries = require("./database/dbQueries");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
+const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
+
+// auth0
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: '7df2430d3a50b9b665965ad695c132afa21f596e10c41bfb41123893eed81e57',
+  baseURL: 'http://localhost:5000',
+  clientID: 'axfl9uTHuDYuRRq4Ybsq9eMJdyaVu9fT',
+  issuerBaseURL: 'https://dev-xx65jdaslr4dkmli.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+// app.get('/', (req, res) => {
+//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+// });
 
 client.connect();
 
@@ -68,6 +88,17 @@ app.post("/api/createTournament", jsonParser, async (req, res) => {
   }
 
 });
+
+app.get("/api/user", async (req, res) => {
+  res.json(req.oidc.user);
+});
+
+
+
+
+
+
+
 
 app.use(express.static(path.join(__dirname, "..", "build")));
 app.use((req, res, next) => {
