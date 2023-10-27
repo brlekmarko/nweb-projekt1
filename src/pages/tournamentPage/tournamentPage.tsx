@@ -68,10 +68,10 @@ const TournamentPage = () => {
 
     const updateBodovi = async (data: Igra) => {
         const indexIgre = tournament.igre.findIndex((igra) => igra.idigra === data.idigra);
-        updatePobjednik(data.idigra, tournament.idnatjecanje, newPobjednici[indexIgre]);
-        const res = await updatePobjednik(data.idigra, tournament.idnatjecanje, newPobjednici[indexIgre]);
+        const res = await updatePobjednik(data.idigra, tournament.idnatjecanje, newPobjednici[indexIgre], user.sub);
         if (res.data.success){
             const noviNatjecatelji = res.data.natjecatelji;
+            noviNatjecatelji.sort((a : Natjecatelj, b: Natjecatelj) => b.bodovi - a.bodovi);
             setTournament({
                 ...tournament,
                 igre: tournament.igre.map((igra, index) => index === indexIgre ? {...igra, pobjednik: newPobjednici[index]} : igra),
@@ -142,7 +142,7 @@ const TournamentPage = () => {
                 <h2>Bodovi (pobjeda/nerješeno/poraz): {tournament.bodovipobjeda}/{tournament.bodovinerjeseno}/{tournament.bodoviporaz}</h2>
             </div>
             <div className="tournament-table">
-                <DataTable value={tournament.natjecatelji} sortField="bodovi" tableStyle={{ minWidth: '50rem' }}>
+                <DataTable value={tournament.natjecatelji} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="ime" header="Ime" />
                     <Column field="bodovi" header="Bodovi" />
                 </DataTable>

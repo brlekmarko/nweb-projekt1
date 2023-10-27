@@ -96,13 +96,25 @@ app.post("/api/updatePobjednik", jsonParser, async (req, res) => {
     const idigra = req.body.idigra;
     const pobjednik = req.body.pobjednik;
     const idnatjecanje = req.body.idnatjecanje;
+    const idkorisnik = req.body.idkorisnik;
+
+    // dohvatimo natjecanje da znamo koliko bodova nose pobjeda/poraz/nerjeseno
+    // potrebno za provjeru je li korisnikov id kreator natjecanja
+    const dbres = await client.query(queries.getTournament(idnatjecanje));
+    const tournament = dbres.rows[0];
+
+    // korisnik nije kreator natjecanja, ne može mjenjati pobjednike
+    if(tournament.kreator != idkorisnik){
+      res.json({ success: false });
+      client.query("COMMIT");
+      return;
+    }
+
     // updateamo pobjednika u kolu
     await client.query(queries.updatePobjednik(idigra, pobjednik));
     // potrebno proci kroz sva kola i updateati bodove natjecateljima
-    // dohvatimo natjecanje da znamo koliko bodova nose pobjeda/poraz/nerjeseno
-    const dbres = await client.query(queries.getTournament(idnatjecanje));
+    
     const kola = await client.query(queries.getTournamentKola(idnatjecanje));
-    const tournament = dbres.rows[0];
     const igre = kola.rows;
 
     const bodoviPobjeda = tournament.bodovipobjeda;

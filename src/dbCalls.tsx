@@ -19,6 +19,6 @@ export function getUser() {
     return axios.get(`${BASE_URL}/user`);
 }
 
-export function updatePobjednik(idigra: number, idnatjecanje: number, pobjednik: string) {
-    return axios.post(`${BASE_URL}/updatePobjednik`, { idigra, idnatjecanje, pobjednik });
+export function updatePobjednik(idigra: number, idnatjecanje: number, pobjednik: string, idkorisnik: string) {
+    return axios.post(`${BASE_URL}/updatePobjednik`, { idigra, idnatjecanje, pobjednik, idkorisnik });
 }
