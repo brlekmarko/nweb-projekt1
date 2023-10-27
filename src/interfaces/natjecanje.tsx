@@ -7,6 +7,15 @@ export interface NatjecanjeForma {
     kreator: string;
 }
 
+export interface NatjecanjeSimple{
+    idnatjecanje: number;
+    naziv: string;
+    bodoviPobjeda: number;
+    bodoviPoraz: number;
+    bodoviNerjeseno: number;
+    kreator: string;
+}
+
 export interface Natjecatelj{
     idnatjecatelj: number;
     idnatjecanje: number;

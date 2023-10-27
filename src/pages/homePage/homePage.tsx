@@ -2,13 +2,15 @@ import { Button } from 'primereact/button';
 import { useState, useEffect } from 'react';
 import PopupCreateTournament from '../createTournamentPopup/createTournamentPopup';
 import './homePage.css';
-import { getUser } from '../../dbCalls';
+import { getTournamentsForUser, getUser } from '../../dbCalls';
+import { NatjecanjeSimple } from '../../interfaces/natjecanje';
 
 const HomePage = () => {
 
     const [popupCreate, setPopupCreate] = useState<Boolean>(false);
 
     const [user, setUser] = useState<any>(null);
+    const [myTournaments, setMyTournaments] = useState<NatjecanjeSimple[]>([]);
 
     const stvoriNatjecanje = () => {
         setPopupCreate(true);
@@ -26,7 +28,8 @@ const HomePage = () => {
         async function fetchData() {
             const res = await getUser();
             setUser(res.data);
-            console.log(res.data);
+            const res2 = await getTournamentsForUser();
+            setMyTournaments(res2.data);
         }
         fetchData();
     }, []);
@@ -42,13 +45,20 @@ const HomePage = () => {
             
             <div>
                 {user && <>
-                    <Button label="Stvori natjecanje" onClick={ stvoriNatjecanje }/>
                     <br/>
-                    <Button label="Logout" onClick= { logout }/>
-                    <h1>Ulogiran kao: {user.name}</h1>
+                    <Button label="Stvori novo natjecanje" onClick={ stvoriNatjecanje }/>
+                    <br/>
+                    <h2>Moja natjecanja:</h2>
+                    {myTournaments.map((tournament) => (
+                        <>
+                            <a href={"/natjecanje/" + tournament.idnatjecanje}>{tournament.naziv}</a>
+                            <br/>
+                        </>
+                    ))}
+                    {myTournaments.length === 0 && <h3>Još nemate natjecanja</h3>}
                 </>}
                 {!user && <>
-                    <Button label="Login" onClick={ login }/>
+                    <h1>Ulogirajte se kako bi mogli kreirati svoja natjecanja</h1>
                 </>
                 }
             </div>

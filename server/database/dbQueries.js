@@ -74,6 +74,10 @@ function updateBodoviNatjecatelj(idnatjecatelj, bodovi){
     return "UPDATE natjecatelj SET bodovi = " + bodovi + " WHERE idnatjecatelj = " + idnatjecatelj;
 }
 
+function getNatjecanjaForUser(username){
+    return "SELECT * FROM natjecanje WHERE kreator = '" + username + "'";
+}
+
 module.exports = {
     getAllTournaments,
     newTournamentCreateNatjecanje,
@@ -83,5 +87,6 @@ module.exports = {
     getTournamentNatjecatelji,
     getTournamentKola,
     updatePobjednik,
-    updateBodoviNatjecatelj
+    updateBodoviNatjecatelj,
+    getNatjecanjaForUser
 }

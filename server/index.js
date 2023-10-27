@@ -164,7 +164,15 @@ app.post("/api/updatePobjednik", jsonParser, async (req, res) => {
   }
 });
 
-
+app.get("/api/fetchUserTournaments", async (req, res) => {
+  const id = req.params.id;
+  try{
+    const dbres = await client.query(queries.getNatjecanjaForUser(req.oidc.user.sub));
+    res.json(dbres.rows);
+  }catch(e){
+    res.json([]);
+  }
+});
 
 
 

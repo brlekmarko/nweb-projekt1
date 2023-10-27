@@ -22,3 +22,7 @@ export function getUser() {
 export function updatePobjednik(idigra: number, idnatjecanje: number, pobjednik: string, idkorisnik: string) {
     return axios.post(`${BASE_URL}/updatePobjednik`, { idigra, idnatjecanje, pobjednik, idkorisnik });
 }
+
+export function getTournamentsForUser() {
+    return axios.get(`${BASE_URL}/fetchUserTournaments`);
+}

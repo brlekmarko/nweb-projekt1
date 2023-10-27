@@ -6,6 +6,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import "./tournamentPage.css";
 
 const TournamentPage = () => {
     const { id } = useParams();
@@ -100,18 +101,18 @@ const TournamentPage = () => {
 
     const pobjednikBody = (data: Igra) => {
         return (
-            <>
+            <div className="pobjednikBody">
                 {(!inEditMode[tournament.igre.findIndex((igra) => igra.idigra === data.idigra)]) ? (
                     <>
                         {data.pobjednik === "1" && tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.idnatjecatelj)?.ime + " (" + data.idnatjecatelj + ")"}
                         {data.pobjednik === "2" && tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.igracdvaidnatjecatelj)?.ime + " (" + data.igracdvaidnatjecatelj + ")"}
                         {data.pobjednik === "X" && "Nerješeno"}
                         {data.pobjednik === "0" && "Nije još odigrano"}
-                        {tournament.kreator === user?.sub && <Button label="Uredi" onClick={() => openEditMode(data)} />}
+                        {tournament.kreator === user?.sub && <Button className="pobjednikButton urediButton" label="Uredi" onClick={() => openEditMode(data)} />}
                     </>
                 ) : (
                     <>
-                        <Dropdown value={newPobjednici[tournament.igre.findIndex((igra) => igra.idigra === data.idigra)]} onChange={(e) => {
+                        <Dropdown className="pobjednikDropdown" value={newPobjednici[tournament.igre.findIndex((igra) => igra.idigra === data.idigra)]} onChange={(e) => {
                             setNewPobjednici(newPobjednici.map((pobjednik, index) => index === tournament.igre.findIndex((igra) => igra.idigra === data.idigra) ? e.value : pobjednik));
                         }}
                         options={
@@ -122,23 +123,22 @@ const TournamentPage = () => {
                                 { name: "Nije još odigrano", value: "0" },
                             ]
                         } optionLabel="name" 
-                            placeholder="Odaberite pobjednika" className="w-full md:w-14rem" />
+                            placeholder="Odaberite pobjednika" />
 
-                        <Button label="Spremi" onClick={() => saveMatchResult(data)} />
-                        <Button label="Odustani" onClick={() => cancelEditMode(data)} />
+                        <Button label="Spremi" className="pobjednikButton spremiButton" onClick={() => saveMatchResult(data)} />
+                        <Button label="Odustani" className="pobjednikButton odustaniButton" onClick={() => cancelEditMode(data)} />
                     </>
                 )}
-            </>
+            </div>
         );
     };
 
 
     return (
-        <div>
+        <div className="tournament-page">
             <div className="tournament-info">
                 <h1>{tournament.naziv}</h1>
                 <h2>Ukupno igrača: {tournament.natjecatelji.length}</h2>
-                <h2>Kreator: {tournament.kreator}</h2>
                 <h2>Bodovi (pobjeda/nerješeno/poraz): {tournament.bodovipobjeda}/{tournament.bodovinerjeseno}/{tournament.bodoviporaz}</h2>
             </div>
             <div className="tournament-table">
@@ -148,7 +148,7 @@ const TournamentPage = () => {
                 </DataTable>
             </div>
             <div className="tournament-games">
-                <h1>Mečevi</h1>
+                <h1>Igre</h1>
                 <DataTable value={tournament.igre} tableStyle={{ minWidth: '50rem' }}>
                     <Column header="Natjecatelj 1" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.idnatjecatelj)?.ime + " (" + data.idnatjecatelj + ")"} />
                     <Column header="Natjecatelj 2" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.igracdvaidnatjecatelj)?.ime + " (" + data.igracdvaidnatjecatelj + ")"} />
