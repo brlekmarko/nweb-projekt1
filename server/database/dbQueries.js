@@ -65,6 +65,15 @@ function newTournamentCreateKola(id, tournament, natjecateljiIds){
     return toReturn;
 }
 
+
+function updatePobjednik(idigra, pobjednik){
+    return "UPDATE igra SET pobjednik = \'" + pobjednik + "\' WHERE idigra = " + idigra;
+}
+
+function updateBodoviNatjecatelj(idnatjecatelj, bodovi){
+    return "UPDATE natjecatelj SET bodovi = " + bodovi + " WHERE idnatjecatelj = " + idnatjecatelj;
+}
+
 module.exports = {
     getAllTournaments,
     newTournamentCreateNatjecanje,
@@ -72,5 +81,7 @@ module.exports = {
     newTournamentCreateKola,
     getTournament,
     getTournamentNatjecatelji,
-    getTournamentKola
+    getTournamentKola,
+    updatePobjednik,
+    updateBodoviNatjecatelj
 }

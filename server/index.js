@@ -88,6 +88,69 @@ app.get("/api/user", async (req, res) => {
   res.json(req.oidc.user);
 });
 
+app.post("/api/updatePobjednik", jsonParser, async (req, res) => {
+  await client.query("BEGIN");
+
+
+  try{
+    const idigra = req.body.idigra;
+    const pobjednik = req.body.pobjednik;
+    const idnatjecanje = req.body.idnatjecanje;
+    // updateamo pobjednika u kolu
+    await client.query(queries.updatePobjednik(idigra, pobjednik));
+    // potrebno proci kroz sva kola i updateati bodove natjecateljima
+    // dohvatimo natjecanje da znamo koliko bodova nose pobjeda/poraz/nerjeseno
+    const dbres = await client.query(queries.getTournament(idnatjecanje));
+    const kola = await client.query(queries.getTournamentKola(idnatjecanje));
+    const tournament = dbres.rows[0];
+    const igre = kola.rows;
+
+    const bodoviPobjeda = tournament.bodovipobjeda;
+    const bodoviPoraz = tournament.bodoviporaz;
+    const bodoviNerjeseno = tournament.bodovinerjeseno;
+    
+    
+    let bodovi = {};
+    for(let i = 0; i < igre.length; i++){
+        const igra = igre[i];
+        if(bodovi[igra.idnatjecatelj] == undefined){
+            bodovi[igra.idnatjecatelj] = 0;
+        }
+        if(bodovi[igra.igracdvaidnatjecatelj] == undefined){
+            bodovi[igra.igracdvaidnatjecatelj] = 0;
+        }
+        if(igra.pobjednik == "0"){ // meč nije odigran
+          continue;
+        }else if(igra.pobjednik == "X"){ // nerješeno
+          bodovi[igra.idnatjecatelj] += bodoviNerjeseno;
+          bodovi[igra.igracdvaidnatjecatelj] += bodoviNerjeseno;
+        }else if(igra.pobjednik == "1"){ // pobjeda prvog
+          bodovi[igra.idnatjecatelj] += bodoviPobjeda;
+          bodovi[igra.igracdvaidnatjecatelj] += bodoviPoraz;
+        }else if(igra.pobjednik == "2"){ // pobjeda drugog
+          bodovi[igra.idnatjecatelj] += bodoviPoraz;
+          bodovi[igra.igracdvaidnatjecatelj] += bodoviPobjeda;
+        }      
+    }
+    // updateamo bodove natjecateljima
+    for(let natjecatelj in bodovi){
+        await client.query(queries.updateBodoviNatjecatelj(natjecatelj, bodovi[natjecatelj]));
+    }
+    // dohvatimo natjecatelje da korisnik zna novo stanje bodova
+    const natjecatelji = await client.query(queries.getTournamentNatjecatelji(idnatjecanje));
+    res.json({ success: true, natjecatelji: natjecatelji.rows });
+    await client.query("COMMIT");
+
+
+
+
+
+  }catch(e){
+    await client.query("ROLLBACK");
+    console.log(e);
+    res.json({ success: false });
+  }
+});
 
 
 

@@ -18,3 +18,7 @@ export function fetchTournament(id: number) {
 export function getUser() {
     return axios.get(`${BASE_URL}/user`);
 }
+
+export function updatePobjednik(idigra: number, idnatjecanje: number, pobjednik: string) {
+    return axios.post(`${BASE_URL}/updatePobjednik`, { idigra, idnatjecanje, pobjednik });
+}
