@@ -150,9 +150,9 @@ const TournamentPage = () => {
             <div className="tournament-games">
                 <h1>Igre</h1>
                 <DataTable value={tournament.igre} tableStyle={{ minWidth: '50rem' }}>
-                    <Column header="Natjecatelj 1" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.idnatjecatelj)?.ime + " (" + data.idnatjecatelj + ")"} />
-                    <Column header="Natjecatelj 2" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.igracdvaidnatjecatelj)?.ime + " (" + data.igracdvaidnatjecatelj + ")"} />
-                    <Column header="Pobjednik" body={pobjednikBody} />
+                    <Column style={{width: "30%"}} header="Natjecatelj 1" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.idnatjecatelj)?.ime + " (" + data.idnatjecatelj + ")"} />
+                    <Column style={{width: "30%"}} header="Natjecatelj 2" body={(data: Igra) => tournament.natjecatelji.find((natjecatelj) => natjecatelj.idnatjecatelj === data.igracdvaidnatjecatelj)?.ime + " (" + data.igracdvaidnatjecatelj + ")"} />
+                    <Column style={{width: "40%"}} header="Pobjednik" body={pobjednikBody} />
                 </DataTable>
             </div>
         </div>

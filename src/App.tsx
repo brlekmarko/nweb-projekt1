@@ -29,12 +29,12 @@ function App() {
           </span>
           <span className="right-align-header">
             {user.name}
-            <a className="header-link" href="/logout">Logout</a>
+            <a className="header-link logout-button" href="/logout">Logout</a>
           </span>
           
         </> : <>
           <span className="left-align-header">
-            <a href="/">Home</a>
+            <a className="header-link" href="/">Home</a>
           </span>
           <span className="right-align-header">
             <a className="header-link" href="/login">Login</a>

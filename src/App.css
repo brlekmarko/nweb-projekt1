@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #8124fa;
+  background-color: #6366f1;
   min-height: 5vh;
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@
 }
 
 .left-align-header{
-  margin-left: 10px;
+  margin-left: 20px;
   margin-right: auto;
 }
 
@@ -47,5 +47,9 @@
 }
 
 .header-link{
-  margin-left: 10px;
+  color: rgb(255, 255, 255);
+}
+
+.logout-button{
+  margin-left: 30px;
 }
