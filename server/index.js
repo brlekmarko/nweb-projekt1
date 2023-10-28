@@ -6,7 +6,6 @@ const queries = require("./database/dbQueries");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
 const auth0config = require('./auth0/config');
 
 
@@ -16,10 +15,6 @@ const auth0config = require('./auth0/config');
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(auth0config));
 
-// req.isAuthenticated is provided from the auth router
-// app.get('/', (req, res) => {
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
 
 client.connect();
 
