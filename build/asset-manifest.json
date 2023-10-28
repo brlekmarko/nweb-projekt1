@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fcfa6087.css",
+    "main.js": "/static/js/main.acedbda3.js",
+    "static/media/Inter-italic.var.woff2?v=3.19": "/static/media/Inter-italic.var.30807be7abc48ba8c73c.woff2",
+    "static/media/Inter-roman.var.woff2?v=3.19": "/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
+    "index.html": "/index.html",
+    "main.fcfa6087.css.map": "/static/css/main.fcfa6087.css.map",
+    "main.acedbda3.js.map": "/static/js/main.acedbda3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fcfa6087.css",
+    "static/js/main.acedbda3.js"
+  ]
+}
